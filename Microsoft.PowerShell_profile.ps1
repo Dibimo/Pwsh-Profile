@@ -2,6 +2,7 @@
 new-alias rename rename-item #renomear arquivo
 new-alias c clear-host #limpar tela
 new-alias touch New-Item #criar arquivo
+New-Alias ping Test-Connection
 
 #get the path of the last directory accessed
 $theLast = Get-Content "$env:USERPROFILE\Documents\PowerShell\theLast.txt"
@@ -9,7 +10,7 @@ $theLast = Get-Content "$env:USERPROFILE\Documents\PowerShell\theLast.txt"
 #customizing the prompt
 function prompt {
   $p = Split-Path -leaf -path (Get-Location)
-  "$p> "
+  "$p -> "
 }
 
 #function for simulate command top from Linux
@@ -33,11 +34,15 @@ function pullPush {
 }
 
 #open a file or web page with Firefox. It's usefull if you ara a web programer :)
-function startFirefox {
-	param (
-		$page
-	)
-	Start-Process -FilePath 'C:\Program Files\Mozilla Firefox\firefox.exe' $page
+function pom {
+	$dependencias = '<dependencies>
+  		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>ij</artifactId>
+			<version>1.53c</version>
+		</dependency>
+</dependencies>'
+	Set-Clipboard -Value $dependencias
 }
 
 #welcome mensage
@@ -69,8 +74,21 @@ function addPoint {
 
 }
 
-function loadPoints {
-	$path = "$env:USERPROFILE\Documents\PowerShell\pontos.txt"
+function addProgram {
+	if ($args.Count -eq 0) {
+        Write-Host "Precisa-se de um Programa"
+        return
+    }
+	$path = "$env:USERPROFILE\Documents\PowerShell\programas.txt"
+	$novoPrograma = ((Get-Location).Path + $args[0].Substring(1))
+	$newPath = '$global:' + "$($args[1])" + " = '$($novoPrograma)'" + " ;"
+
+	Add-Content -Path $path -value $newPath
+	
+}
+
+function loadFile {
+	$path = "$env:USERPROFILE\Documents\PowerShell\" + $args[0]
 	$points = Get-Content $path -Encoding utf8
 	$points = [string]$points
 
@@ -85,6 +103,39 @@ function reiniciaAudio {
 	$audio.Start()
 	
 }
+
+function this{
+	if ($args.Count -eq 0) {
+        (Get-Location).Path | Set-Clipboard
+        return
+    }
+    $caminhoCompleto = (Get-Location).Path + $args[0].Substring(1)
+    Set-Clipboard $caminhoCompleto
+}
+
+function organizaPasta {
+	$pastaAtual = Get-Location
+    
+	$listaInicial = (Get-ChildItem -Path $pastaAtual).Extension
+    
+	$listaFinal = @()
+	foreach ($item in $listaInicial) {
+		if (!$listaFinal.Contains($item) && $item -ne "") {
+			$listaFinal += $item
+		}
+	}
+	foreach ($item in $listaFinal) {
+		if ($item -ne "" ) {
+			$extensaoAtual = $item.Replace('.', '')
+			$pastaJaExiste = Test-Path $extensaoAtual
+			if (!$pastaJaExiste) {
+				mkdir $extensaoAtual
+			}
+			(Get-ChildItem -Filter "*$item") | Move-Item -Destination $extensaoAtual
+		}   
+	}
+}
+
 # Shows navigable menu of all options when hitting Tab
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 
@@ -92,5 +143,7 @@ Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadlineKeyHandler -Key UpArrow -Function HistorySearchBackward
 Set-PSReadlineKeyHandler -Key DownArrow -Function HistorySearchForward
 
-loadPoints
+loadFile pontos.txt
+loadFile programas.txt
+
 
