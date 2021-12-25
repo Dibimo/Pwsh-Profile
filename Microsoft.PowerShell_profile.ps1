@@ -70,7 +70,7 @@ function addPoint {
 	$path = "$env:USERPROFILE\Documents\PowerShell\pontos.txt"
 	$newPath ='$global:'+"$($args)"+" = '$PWD';"
 	Add-Content -Path $path -value $newPath
-	loadPoints
+	loadFile pontos.txt
 
 }
 
