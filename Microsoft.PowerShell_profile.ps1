@@ -136,6 +136,17 @@ function organizaPasta {
 	}
 }
 
+function criaAula {
+	$pastaAula = "Aula $((Get-Date).Day)_$((Get-Date).Month)_$((Get-Date).Year)"
+	mkdir $pastaAula > $null
+	mkdir ".\$($pastaAula)\Aula" > $null
+	mkdir ".\$($pastaAula)\Prévia" > $null
+	mkdir ".\$($pastaAula)\Quiz" > $null
+	
+
+	
+}
+
 # Shows navigable menu of all options when hitting Tab
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 
