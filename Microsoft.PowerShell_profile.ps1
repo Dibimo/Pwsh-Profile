@@ -137,7 +137,11 @@ function organizaPasta {
 }
 
 function criaAula {
-	$pastaAula = "Aula $((Get-Date).Day)_$((Get-Date).Month)_$((Get-Date).Year)"
+	$data = Get-Date
+	if($args.Count -gt 0){
+		$data = $data.AddDays($args[0])
+	}
+	$pastaAula = "Aula $($data.Day)_$($data.Month)_$($data.Year)"
 	mkdir $pastaAula > $null
 	mkdir ".\$($pastaAula)\Aula" > $null
 	mkdir ".\$($pastaAula)\Prévia" > $null
