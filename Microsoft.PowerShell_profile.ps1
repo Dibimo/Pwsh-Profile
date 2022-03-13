@@ -141,13 +141,32 @@ function criaAula {
 	if($args.Count -gt 0){
 		$data = $data.AddDays($args[0])
 	}
-	$pastaAula = "Aula $($data.Day)_$($data.Month)_$($data.Year)"
+	$pastaAula = "Aula $($data.Month)_$($data.Day)_$($data.Year)"
 	mkdir $pastaAula > $null
 	mkdir ".\$($pastaAula)\Aula" > $null
 	mkdir ".\$($pastaAula)\Prévia" > $null
 	mkdir ".\$($pastaAula)\Quiz" > $null
 	
 
+	
+}
+
+function fj {
+	param (
+		[switch] $l,
+		[int] $posicaoPasta = 1
+	)
+	if((Get-ChildItem -Directory).Length -eq 0 ){
+		Write-Host 'Este diretorio não contem pastas';
+		return;
+	}
+	if($l){
+		Set-Location (Get-ChildItem -Directory)[(Get-ChildItem -Directory).Length - 1];
+		return;
+	}
+	if ($posicaoPasta -gt 0 -and $posicaoPasta -lt (Get-ChildItem -Directory).Length) {
+		Set-Location (Get-ChildItem -Directory)[$posicaoPasta - 1];
+	}
 	
 }
 
