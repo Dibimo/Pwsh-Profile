@@ -1,4 +1,4 @@
-﻿#alias 
+﻿#alias
 new-alias rename rename-item #renomear arquivo
 new-alias c clear-host #limpar tela
 new-alias touch New-Item #criar arquivo
@@ -16,9 +16,9 @@ function prompt {
 #function for simulate command top from Linux
 #Yeah...I know, but I think this pretty cool
 function top{param([int]$intervalo, [int]$quantidade, [string]$ordenacao)
-		
-	
-While(1) {Get-Process | Sort-Object -des $ordenacao| Select-Object -f $quantidade | Format-Table -a; Start-Sleep $intervalo; Clear-Host} 
+
+
+While(1) {Get-Process | Sort-Object -des $ordenacao| Select-Object -f $quantidade | Format-Table -a; Start-Sleep $intervalo; Clear-Host}
 }
 
 #function for streamline the process for add, commit and push on git
@@ -29,8 +29,9 @@ function commit {
 }
 
 function pullPush {
-	git pull --rebase origin master
-	git push origin master
+	$branchAtual = git rev-parse --abbrev-ref HEAD
+	git pull --rebase origin $branchAtual
+	git push origin $branchAtual
 }
 
 #open a file or web page with Firefox. It's usefull if you ara a web programer :)
@@ -53,9 +54,9 @@ function openHistory {
 	code (Get-PSReadLineOption).HistorySavePath
 }
 
-#logs the event when exiting powershell 
+#logs the event when exiting powershell
 Register-EngineEvent PowerShell.Exiting -Action {
-	guardarUltimoDiretorio 
+	guardarUltimoDiretorio
 } > $null
 
 #this funcition save the last directory accessed in notepad file
@@ -84,7 +85,7 @@ function addProgram {
 	$newPath = '$global:' + "$($args[1])" + " = '$($novoPrograma)'" + " ;"
 
 	Add-Content -Path $path -value $newPath
-	
+
 }
 
 function loadFile {
@@ -101,7 +102,7 @@ function reiniciaAudio {
 	$audio = Get-Service -n *audiosrv*
 	$audio.Stop()
 	$audio.Start()
-	
+
 }
 
 function this{
@@ -115,9 +116,9 @@ function this{
 
 function organizaPasta {
 	$pastaAtual = Get-Location
-    
+
 	$listaInicial = (Get-ChildItem -Path $pastaAtual).Extension
-    
+
 	$listaFinal = @()
 	foreach ($item in $listaInicial) {
 		if (!$listaFinal.Contains($item) && $item -ne "") {
@@ -132,7 +133,7 @@ function organizaPasta {
 				mkdir $extensaoAtual
 			}
 			(Get-ChildItem -Filter "*$item") | Move-Item -Destination $extensaoAtual
-		}   
+		}
 	}
 }
 
@@ -146,9 +147,9 @@ function criaAula {
 	mkdir ".\$($pastaAula)\Aula" > $null
 	mkdir ".\$($pastaAula)\Prévia" > $null
 	mkdir ".\$($pastaAula)\Quiz" > $null
-	
 
-	
+
+
 }
 
 function fj {
@@ -167,7 +168,7 @@ function fj {
 	if ($posicaoPasta -gt 0 -and $posicaoPasta -lt (Get-ChildItem -Directory).Length) {
 		Set-Location (Get-ChildItem -Directory)[$posicaoPasta - 1];
 	}
-	
+
 }
 
 # Shows navigable menu of all options when hitting Tab
