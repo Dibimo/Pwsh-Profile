@@ -1,4 +1,4 @@
-﻿#alias
+#alias
 new-alias rename rename-item #renomear arquivo
 new-alias c clear-host #limpar tela
 new-alias touch New-Item #criar arquivo
@@ -32,18 +32,6 @@ function pullPush {
 	$branchAtual = git rev-parse --abbrev-ref HEAD
 	git pull --rebase origin $branchAtual
 	git push origin $branchAtual
-}
-
-#open a file or web page with Firefox. It's usefull if you ara a web programer :)
-function pom {
-	$dependencias = '<dependencies>
-  		<dependency>
-			<groupId>net.imagej</groupId>
-			<artifactId>ij</artifactId>
-			<version>1.53c</version>
-		</dependency>
-</dependencies>'
-	Set-Clipboard -Value $dependencias
 }
 
 #welcome mensage
@@ -95,13 +83,6 @@ function loadFile {
 
 	$sb = [scriptblock]::Create($points)
     Invoke-Command -scriptblock $sb
-
-}
-
-function reiniciaAudio {
-	$audio = Get-Service -n *audiosrv*
-	$audio.Stop()
-	$audio.Start()
 
 }
 
@@ -171,6 +152,9 @@ function fj {
 
 }
 
+$mopCaminho = "$env:USERPROFILE\Documents\PowerShell\mop.ps1"
+Invoke-Expression (Get-Content $mopCaminho -raw)
+
 # Shows navigable menu of all options when hitting Tab
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 
@@ -182,3 +166,4 @@ loadFile pontos.txt
 loadFile programas.txt
 
 
+Invoke-Expression (&starship init powershell)
