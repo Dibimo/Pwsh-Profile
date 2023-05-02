@@ -1,0 +1,30 @@
+{
+  "criarPagina": {
+    "parametros": [
+      {
+        "nome": "nomeArquivo",
+        "tipo": "string"
+      }
+    ],
+    "body": [
+      "md .\\src\\renderer\\pages\\$(_psb.nomeArquivo);",
+      "$atual = pwd;",
+      "cd \".\\src\\renderer\\pages\\$(_psb.nomeArquivo)\";",
+      "New-Item \"$(_psb.nomeArquivo).tsx\";",
+      "New-Item \"$(_psb.nomeArquivo).css\";",
+      "\"import './$(_psb.nomeArquivo).css';",
+      "",
+      "export default function $(_psb.nomeArquivo)() {",
+      "  return <div>$(_psb.nomeArquivo)</div>;",
+      "}\" > \"$(_psb.nomeArquivo).tsx\";",
+      "cd $atual;"
+    ]
+  },
+  "criarProjetoVue": {
+    "body": [
+      "Write-Host 'Criando projeto em vue...'",
+      "Write-Host 'Instalando dependencias...'",
+      "Write-Host 'Finalizado';"
+    ]
+  }
+}
