@@ -1,5 +1,5 @@
 #abrindo o JSON como objeto
-$jsonObj = Get-Content './teste.json' | ConvertFrom-Json;
+$jsonObj = Get-Content "$env:USERPROFILE\Documents\PowerShell\mops.json" | ConvertFrom-Json;
 
 #criando base da função mop
 $retorno = 'function mop {
